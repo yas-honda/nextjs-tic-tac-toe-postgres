@@ -1,0 +1,11 @@
+{
+  "name": "Tic-Tac-Toe Vercel",
+  "description": "A real-time Tic-Tac-Toe game using Next.js App Router and Vercel Postgres. Includes real-time polling and simple player identity logic.",
+  "dependencies": {
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "@vercel/postgres": "latest"
+  },
+  "requestFramePermissions": []
+}
