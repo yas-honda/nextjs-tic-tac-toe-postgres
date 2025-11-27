@@ -1,15 +1,12 @@
-import React, { useState } from 'react';
-import { CreateMatchResponse } from '../types';
+'use client';
 
-// Note: In Next.js App Router, we would use `next/navigation`.
-// For the SPA simulation in App.tsx, we inject the navigation behavior.
-// But this code is written to be Next.js compatible.
-// We will use a simple anchor or window.location for the simulation if needed,
-// or props if wrapped. To make this code copy-pasteable to Next.js, 
-// we assume `useRouter` from `next/navigation` is available or we use window.location.
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { CreateMatchResponse } from '../types';
 
 export default function HomePage() {
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const handleCreateGame = async () => {
     setLoading(true);
@@ -25,10 +22,8 @@ export default function HomePage() {
       // I am the creator, so I am 'X'
       if (typeof window !== 'undefined') {
         localStorage.setItem(`tic-tac-toe-role-${data.id}`, 'X');
-        // Navigate to the game page
-        // In a real Next.js app: router.push(`/game/${data.id}`);
-        // For this demo structure:
-        window.location.hash = `/game/${data.id}`;
+        // Navigate to the game page using Next.js router
+        router.push(`/game/${data.id}`);
       }
     } catch (error) {
       console.error(error);

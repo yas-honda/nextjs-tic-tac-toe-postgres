@@ -1,13 +1,15 @@
+'use client';
+
 import React, { useEffect, useState, useCallback } from 'react';
+import { useParams, useRouter } from 'next/navigation';
 import { MatchData, Player } from '../../../types';
 
-// In Next.js App Router, the props would be { params }: { params: { id: string } }
-interface GamePageProps {
-  params: { id: string };
-}
-
-export default function GamePage({ params }: GamePageProps) {
-  const { id } = params;
+export default function GamePage() {
+  // Use useParams hook for robust client-side access to route parameters
+  const params = useParams();
+  const id = params?.id as string;
+  const router = useRouter();
+  
   const [matchData, setMatchData] = useState<MatchData | null>(null);
   const [myRole, setMyRole] = useState<Player | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -15,6 +17,7 @@ export default function GamePage({ params }: GamePageProps) {
 
   // 1. Determine Player Identity
   useEffect(() => {
+    if (!id) return;
     const storageKey = `tic-tac-toe-role-${id}`;
     const storedRole = localStorage.getItem(storageKey);
 
@@ -29,6 +32,7 @@ export default function GamePage({ params }: GamePageProps) {
 
   // 2. Poll Game State (3 seconds)
   const fetchGameState = useCallback(async () => {
+    if (!id) return;
     try {
       const res = await fetch(`/api/match/${id}`);
       if (!res.ok) {
@@ -55,7 +59,7 @@ export default function GamePage({ params }: GamePageProps) {
 
   // 3. Handle Move
   const handleCellClick = async (index: number) => {
-    if (!matchData || !myRole) return;
+    if (!matchData || !myRole || !id) return;
     
     // Client-side validations for immediate feedback/prevention
     if (matchData.board[index] !== null) return;
@@ -123,7 +127,7 @@ export default function GamePage({ params }: GamePageProps) {
         <div className="text-center space-y-4">
           <h2 className="text-2xl text-red-500 font-bold">Error</h2>
           <p>{error}</p>
-          <a href="/" className="text-blue-400 hover:underline">Go Home</a>
+          <button onClick={() => router.push('/')} className="text-blue-400 hover:underline">Go Home</button>
         </div>
       </div>
     );
@@ -133,11 +137,11 @@ export default function GamePage({ params }: GamePageProps) {
     <div className="min-h-screen bg-slate-900 text-white flex flex-col items-center p-4">
       {/* Header */}
       <header className="w-full max-w-md flex justify-between items-center py-6 mb-8">
-        <h1 className="text-2xl font-bold text-slate-100 cursor-pointer" onClick={() => window.location.hash = '/'}>
+        <h1 className="text-2xl font-bold text-slate-100 cursor-pointer" onClick={() => router.push('/')}>
           Tic-Tac-Toe
         </h1>
         <div className="text-xs font-mono bg-slate-800 px-2 py-1 rounded text-slate-500">
-          ID: {id.slice(0, 6)}...
+          ID: {id?.slice(0, 6)}...
         </div>
       </header>
 
