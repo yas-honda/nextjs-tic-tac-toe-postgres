@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { MatchData, Player } from '../../../types';
+import { MatchData, Player } from '@/types';
 
 export default function GamePage() {
   // Use useParams hook for robust client-side access to route parameters

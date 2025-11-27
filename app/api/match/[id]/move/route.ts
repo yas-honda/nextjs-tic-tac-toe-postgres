@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { sql } from '../../../../lib/db';
-import { Board, Player, MoveRequest } from '../../../../types';
+import { sql } from '@/lib/db';
+import { Board, Player, MoveRequest } from '@/types';
 
 // Helper to check for a winner
 function calculateWinner(squares: Board): Player | 'DRAW' | null {
@@ -26,10 +26,10 @@ function calculateWinner(squares: Board): Player | 'DRAW' | null {
 
 export async function POST(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const id = params.id;
+    const { id } = await params;
     const body: MoveRequest = await request.json();
     const { index, player } = body;
 

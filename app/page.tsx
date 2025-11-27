@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { CreateMatchResponse } from '../types';
+import { CreateMatchResponse } from '@/types';
 
 export default function HomePage() {
   const [loading, setLoading] = useState(false);
